@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "mtgscan"
-version = "1.0.8"
+version = "1.0.9"
 description = "Convert an image containing Magic cards to decklist"
 authors = ["qfortier <qpfortier@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-homepage = "https://github.com/fortierq/MTGScan"
-repository = "https://github.com/fortierq/MTGScan"
+homepage = "https://github.com/Top-Decks/MTGSCAN"
+repository = "https://github.com/Top-Decks/MTGSCAN"
 keywords = ["mtg", "scan", "OCR", "magic", "cards", "computer vision"]
 
 [tool.poetry.dependencies]
@@ -16,6 +16,8 @@ requests = "^2.25.0"
 matplotlib = "^3.3.3"
 psutil = "^5.8.0"
 numpy = "^1.19.3"
+mplfonts = "^0.0.8"
+
 
 [tool.poetry.dev-dependencies]
 yapf = "^0.30.0"

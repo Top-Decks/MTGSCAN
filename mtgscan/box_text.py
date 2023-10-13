@@ -1,3 +1,5 @@
+from mplfonts import use_font
+import matplotlib.font_manager
 import base64
 from dataclasses import dataclass, field
 from io import BytesIO
@@ -6,6 +8,9 @@ import logging
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 import mtgscan.utils
+from mplfonts.bin.cli import init
+init()
+use_font('Noto Sans Mono CJK SC')  # 指定中文字体
 
 
 @dataclass
@@ -29,6 +34,9 @@ class BoxTextList:
         yield from self.box_texts
 
     def __getitem__(self, i) -> BoxText:
+        if i >= len(self.box_texts):
+            raise IndexError(
+                f"Invalid index: {i}. The list has a length of {len(self.box_texts)}.")
         return self.box_texts[i]
 
     def add(self, box, text, n=1) -> None:
@@ -84,7 +92,8 @@ class BoxTextList:
 
     def _get_image(self, image_in):
         img = mtgscan.utils.load_url_or_file_or_base64(image_in)
-        fig, ax = plt.subplots(figsize=(img.shape[1] // 64, img.shape[0] // 64))
+        fig, ax = plt.subplots(
+            figsize=(img.shape[1] // 64, img.shape[0] // 64))
         ax.imshow(img, aspect='equal')
         for box, text, n in self.box_texts:
             P = (box[0], box[1])
@@ -97,7 +106,8 @@ class BoxTextList:
             ax.add_line(line)
             if n != 1:
                 text = f"{n}x {text}"
-            ax.text(P[0], P[1], text, bbox=dict(facecolor='blue', alpha=0.5), fontsize=13, color='white')
+            ax.text(P[0], P[1], text,  bbox=dict(
+                facecolor='blue', alpha=0.5), fontsize=13, color='white')
         ax.axis('off')
         fig.tight_layout()
         return fig

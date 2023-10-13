@@ -10,7 +10,8 @@ from symspellpy import SymSpell, Verbosity, editdistance
 from .box_text import BoxTextList
 from .deck import Deck, Pile
 
-URL_ALL_CARDS = "https://mtgjson.com/api/v5/VintageAtomic.json"  # URL to download card list, if needed
+# URL to download card list, if needed
+URL_ALL_CARDS = "https://mtgjson.com/api/v5/VintageAtomic.json"
 URL_KEYWORDS = "https://mtgjson.com/api/v5/Keywords.json"
 
 
@@ -65,7 +66,8 @@ class MagicRecognition:
         self.sym_all_cards.load_dictionary(file_all_cards, 0, 1, separator="$")
         self.all_cards = self.sym_all_cards._words
         print(f"Loaded {file_all_cards}: {len(self.all_cards)} cards")
-        self.edit_dist = editdistance.EditDistance(editdistance.DistanceAlgorithm.LEVENSHTEIN)
+        self.edit_dist = editdistance.EditDistance(
+            editdistance.DistanceAlgorithm.LEVENSHTEIN)
 
         if not Path(file_keywords).is_file():
             keywords = load_json(URL_KEYWORDS)
@@ -103,7 +105,8 @@ class MagicRecognition:
                                            Verbosity.CLOSEST,
                                            max_edit_distance=min(3, int(self.max_ratio_diff_keyword * len(text))))
             if sug != []:
-                logging.info(f"Keyword rejected: {text} {sug[0].distance/len(text)} {sug[0].term}")
+                logging.info(
+                    f"Keyword rejected: {text} {sug[0].distance/len(text)} {sug[0].term}")
             else:
                 card = self._search(self._preprocess(text))
                 if card is not None:
@@ -121,6 +124,9 @@ class MagicRecognition:
             BoxTextList containing recognized cards
         """
         def _assign_stacked_one(box_cards: BoxTextList, m: int, comp) -> None:
+            if not box_cards:
+                logging.warning("box_cards list is empty!")
+                return
             i_min = 0
             for i, box_card in enumerate(box_cards):
                 if comp(box_card.box, box_cards[i_min].box):
@@ -144,7 +150,8 @@ class MagicRecognition:
             if len(text) == 2:
                 for i in [0, 1]:
                     if text[i] in '×xX' and text[1 - i].isnumeric():
-                        _assign_stacked_one(box_cards, int(text[1 - i]), partial(comp[i], box=box))
+                        _assign_stacked_one(box_cards, int(
+                            text[1 - i]), partial(comp[i], box=box))
 
     def _box_cards_to_deck(self, box_cards: BoxTextList) -> Deck:
         """Convert recognized cards to decklist"""
@@ -221,7 +228,8 @@ class MagicRecognition:
                 if len(text) < len(card) + 7:
                     logging.info(f"Corrected: {text} {ratio} {card}")
                     return card
-                logging.info(f"Not corrected (too long): {text} {ratio} {card}")
+                logging.info(
+                    f"Not corrected (too long): {text} {ratio} {card}")
             else:
                 logging.info(f"Not found: {text}")
         return None
