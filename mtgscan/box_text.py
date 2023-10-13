@@ -1,5 +1,3 @@
-from mplfonts import use_font
-import matplotlib.font_manager
 import base64
 from dataclasses import dataclass, field
 from io import BytesIO
@@ -8,9 +6,6 @@ import logging
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 import mtgscan.utils
-from mplfonts.bin.cli import init
-init()
-use_font('Noto Sans Mono CJK SC')  # 指定中文字体
 
 
 @dataclass
@@ -91,6 +86,7 @@ class BoxTextList:
         self._get_image(image_in).savefig(image_out)
 
     def _get_image(self, image_in):
+        plt.rcParams['font.family'] = 'Noto Sans Mono CJK SC'  # 指定中文字体
         img = mtgscan.utils.load_url_or_file_or_base64(image_in)
         fig, ax = plt.subplots(
             figsize=(img.shape[1] // 64, img.shape[0] // 64))
