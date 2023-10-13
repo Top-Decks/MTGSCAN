@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mtgscan"
-version = "1.0.9"
+version = "1.0.10"
 description = "Convert an image containing Magic cards to decklist"
 authors = ["qfortier <qpfortier@gmail.com>"]
 license = "MIT"
