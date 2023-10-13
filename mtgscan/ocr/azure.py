@@ -13,7 +13,8 @@ class Azure(OCR):
     def __init__(self):
         try:
             self.subscription_key = os.environ['AZURE_VISION_KEY']
-            self.text_recognition_url = os.environ['AZURE_VISION_ENDPOINT'] + "/vision/v3.2/read/analyze"
+            self.text_recognition_url = os.environ['AZURE_VISION_ENDPOINT'] + \
+                "/vision/v3.2/read/analyze"
         except IndexError as e:
             print(str(e))
             print(
@@ -34,12 +35,14 @@ class Azure(OCR):
             if not is_base64:
                 with open(image, "rb") as f:
                     data = f.read()
-        logging.info(f"Send {image} to Azure")
-        response = requests.post(self.text_recognition_url, headers=headers, json=json, data=data)
+        logging.info(f"Sending image to Azure")
+        response = requests.post(
+            self.text_recognition_url, headers=headers, json=json, data=data)
         response.raise_for_status()
         poll = True
         while poll:
-            response_final = requests.get(response.headers["Operation-Location"], headers=headers)
+            response_final = requests.get(
+                response.headers["Operation-Location"], headers=headers)
             analysis = response_final.json()
             time.sleep(1)
             if "analyzeResult" in analysis:
