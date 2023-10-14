@@ -6,6 +6,26 @@ import logging
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 import mtgscan.utils
+from matplotlib import font_manager
+from pathlib import Path
+
+
+def configure_fonts():
+    DIR_FONTS = Path(__file__).parent / "resources" / "fonts"
+
+    font_dirs = [DIR_FONTS]  # The path to the custom font file.
+    font_files = font_manager.findSystemFonts(fontpaths=font_dirs)
+
+    for font_file in font_files:
+        print(font_file)
+        font_manager.fontManager.addfont(font_file)
+
+    # print all fonts
+    for font in font_manager.fontManager.ttflist:
+        print(font.name)
+
+
+configure_fonts()
 
 
 @dataclass
@@ -86,7 +106,7 @@ class BoxTextList:
         self._get_image(image_in).savefig(image_out)
 
     def _get_image(self, image_in):
-        plt.rcParams['font.family'] = 'Noto Sans Mono'  # 指定中文字体
+        plt.rcParams['font.family'] = 'Noto Serif SC'  # 指定中文字体
         img = mtgscan.utils.load_url_or_file_or_base64(image_in)
         fig, ax = plt.subplots(
             figsize=(img.shape[1] // 64, img.shape[0] // 64))

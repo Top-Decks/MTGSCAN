@@ -15,4 +15,4 @@ box_texts = azure.image_to_box_texts(
 #     "https://xqimg.imedao.com/18b2a74b44b7c42c3fc7d32d.jpeg")
 deck = rec.box_texts_to_deck(box_texts)
 for c, k in deck:
-    print(c, k)
+    print(k, c)
