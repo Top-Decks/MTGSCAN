@@ -88,8 +88,19 @@ class MagicRecognition:
         print(f"Loaded {file_keywords}: {len(keywords)} keywords")
 
     def _preprocess(self, text: str) -> str:
-        """Remove characters which can't appear on a Magic card (OCR error)"""
-        return re.sub("[^a-zA-Z',. ]", '', text).rstrip(' ')
+        """Remove characters which can't appear on a Magic card (OCR error)
+        您的正则表达式确实试图保留以下字符，并删除除此之外的所有字符：
+
+        \w: 匹配任何单词字符（等同于 [a-zA-Z0-9_]）
+        \s: 匹配任何空白字符（如空格、制表符和换行符）
+        \u4e00-\u9fa5: 匹配汉字的常用字符范围
+        \u3040-\u309F: 匹配日语平假名字符
+        \u30A0-\u30FF: 匹配日语片假名字符
+        \uAC00-\uD7AF: 匹配韩语Hangul字符
+        \u0400-\u04FF: 匹配西里尔字母，用于许多斯拉夫语系国家的语言
+        \u0370-\u03FF: 匹配希腊字母
+        """
+        return re.sub("[^\w\s\u4e00-\u9fa5\u3040-\u309F\u30A0-\u30FF\uAC00-\uD7AF\u0400-\u04FF\u0370-\u03FF]", '', text).rstrip(' ')
 
     def _preprocess_texts(self, box_texts: BoxTextList) -> None:
         """Apply `preprocess` on each text"""
