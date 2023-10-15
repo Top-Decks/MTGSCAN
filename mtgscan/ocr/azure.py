@@ -14,7 +14,7 @@ class Azure(OCR):
         try:
             self.subscription_key = os.environ['AZURE_VISION_KEY']
             self.text_recognition_url = os.environ['AZURE_VISION_ENDPOINT'] + \
-                "/vision/v3.2/read/analyze"
+                "/vision/v3.1/read/analyze"
         except IndexError as e:
             print(str(e))
             print(
