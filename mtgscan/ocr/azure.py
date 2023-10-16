@@ -6,6 +6,7 @@ import requests
 from mtgscan.box_text import BoxTextList
 from mtgscan.utils import is_url
 from .ocr import OCR
+import base64
 
 
 class Azure(OCR):
@@ -14,7 +15,7 @@ class Azure(OCR):
         try:
             self.subscription_key = os.environ['AZURE_VISION_KEY']
             self.text_recognition_url = os.environ['AZURE_VISION_ENDPOINT'] + \
-                "/vision/v3.1/read/analyze"
+                "/vision/v3.2/read/analyze"
         except IndexError as e:
             print(str(e))
             print(
@@ -28,11 +29,15 @@ class Azure(OCR):
         headers = {'Ocp-Apim-Subscription-Key': self.subscription_key}
         json, data = None, None
         if is_url(image):
+            logging.info(f"Reading image from URL: {image}")
             json = {'url': image}
         else:
             headers['Content-Type'] = 'application/octet-stream'
-            data = image
-            if not is_base64:
+            if is_base64:
+                logging.info(f"Reading image as base64")
+                data = base64.b64decode(image)
+            else:
+                logging.info(f"Reading image from file: {image}")
                 with open(image, "rb") as f:
                     data = f.read()
         logging.info(f"Sending image to Azure")
