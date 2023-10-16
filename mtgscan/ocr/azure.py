@@ -38,7 +38,10 @@ class Azure(OCR):
         logging.info(f"Sending image to Azure")
         response = requests.post(
             self.text_recognition_url, headers=headers, json=json, data=data)
-        response.raise_for_status()
+        # response.raise_for_status()
+        if response.status_code != 200:
+            error_message = response.json().get("error", {}).get("message", "Unknown error")
+            raise Exception(f"Azure API request failed: {error_message}")
         poll = True
         while poll:
             response_final = requests.get(
