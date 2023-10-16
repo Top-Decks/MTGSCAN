@@ -39,7 +39,8 @@ class Azure(OCR):
         response = requests.post(
             self.text_recognition_url, headers=headers, json=json, data=data)
         # response.raise_for_status()
-        if response.status_code != 200:
+        # https://westcentralus.dev.cognitive.microsoft.com/docs/services/computer-vision-v3-1-ga/operations/5d986960601faab4bf452005
+        if response.status_code != 202:
             error_message = response.json().get("error", {}).get("message", "Unknown error")
             raise Exception(f"Azure API request failed: {error_message}")
         poll = True
