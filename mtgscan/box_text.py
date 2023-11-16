@@ -92,6 +92,14 @@ class BoxTextList:
         graphic = base64.b64encode(image_png)
         return graphic.decode('utf-8')
 
+    def get_image(self, image_in):
+        buffer = BytesIO()
+        self._get_image(image_in).savefig(buffer, format='png')
+        buffer.seek(0)
+        image_png = buffer.getvalue()
+        buffer.close()
+        return image_png
+
     def save_image(self, image_in, image_out):
         """Add boxes to `image_in` and save it in `image_out`
 
