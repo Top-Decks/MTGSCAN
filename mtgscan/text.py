@@ -208,7 +208,7 @@ class MagicRecognition:
         """If `text` can be recognized as a Magic card, return that card. Otherwise, return None."""
         if len(text) < 3:  # a card name is never that short
             return None
-        if len(text) > 30:  # a card name is never that long
+        if len(text) > 32:  # a card name is never that long
             logging.info(f"Too long: {text}")
             return None
         if text in self.all_cards:
